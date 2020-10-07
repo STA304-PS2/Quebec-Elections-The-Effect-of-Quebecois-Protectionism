@@ -6,9 +6,11 @@ output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
+install.packages("glue")
 library(tidyverse)
 library(dplyr)
 library(janitor)
+library(gridExtra)
 ```
 
 The Sampling method 
@@ -19,12 +21,12 @@ Quebec_survey_data <- tibble(
   Gender = sample(x = c("Male", "Female", "Non-Binary", "Other", "Prefer not to say"), 
                   size = 100000, replace = TRUE, prob = c(0.48, 0.50, 0.01, 0.001, 0.009)), 
   #Based on Stats Can Census 2016 (Statistics Canada 2019)
-  Age = sample(x = c("18 - 30 years old", "30 - 45 years old", "45 - 60 years old", "60+ years old", "17 years old or younger"), 
+  Age = sample(x = c("18 - 29 years old", "30 - 44 years old", "45 - 59 years old", "60+ years old", "17 years old or younger"), 
                size = 100000, replace = TRUE, prob = c(0.170, 0.192, 0.217, 0.252, 0.169)), 
   #Based on Stats Can Census 2016 (Statistics Canada 2019)
   Region = sample(x = c("Urban", "Town", "Rural"), size = 100000, replace = TRUE, prob = c(0.592, 0.086, 0.322)), 
   #Based on Duffin's 2016 surveys (Duffin 2019)
-  Last_election = sample(x = c("I did not vote in the last provincial election", "I voted for the Liberal party", "I voted for the Conservative party", "I voted for the NDP party", "I voted for the Green party", "I voted for the Bloc Quebecois", "I voted for a party not listed above"), size = 100000, replace = TRUE, prob = c(0.327, 0.231, 0.108, 0.073, 0.030, 0.218, 0.013)), 
+  Last_election = sample(x = c("I did not vote in the last federal election", "I voted for the Liberal party", "I voted for the Conservative party", "I voted for the NDP party", "I voted for the Green party", "I voted for the Bloc Quebecois", "I voted for a party not listed above"), size = 100000, replace = TRUE, prob = c(0.327, 0.231, 0.108, 0.073, 0.030, 0.218, 0.013)), 
   #Based on Elections Canada results in 2019 (Elections Canada 2019)
   Upcoming_election = sample(x = c("I do not plan to vote", "Liberal Party", "Conservative Party", "NDP Party", "Green Party", "Bloc Quebecois", "A party not listed above"), size = 100000, replace = TRUE, prob = c(0.327, 0.23, 0.11, 0.024, 0.038, 0.26, 0.011)),
   #Took the difference in percentage of votes each party got from 2015-2019 in  Quebec. Divided that difference by 2 making the assumption that the extreme trends would slow and assumed the same level of voter participation (Elections Canada 2019)
@@ -48,25 +50,93 @@ head(Quebec_survey_data)
 
 # Results
 ```{r}
-total_votes_by_culture <- Quebec_survey_data %>%  #generate a new data set 
+table1 <- Quebec_survey_data %>%  #Generate a percentage table of respondants by age and percentage
+  tabyl(Age, Gender) %>% #use tabyl to generate most of this 
+  adorn_percentages("col") %>% #tell it to display percentages
+  adorn_pct_formatting(digits = 1) %>% 
+  adorn_ns() %>% #Add back in the raw counts 
+  adorn_title(placement = "combined", col_name = "Gender", row_name = "Age") %>%
+  knitr::kable() #Adjust how it is displayed 
+
+table1 
+
+
+Figure1 <- Quebec_survey_data %>% 
+  ggplot(aes(Age)) +
+  geom_bar() +
+  labs(title = "Respondants by Age Category", y = "Number of Respondants", x = "Age Category")+
+  theme_minimal()  #Adjust how it is displayed 
+  
+Figure1 + geom_bar(fill = "steelblue")
+
+Figure2 <- Quebec_survey_data %>% 
+  ggplot(aes(Gender)) +
+  geom_bar() +
+  labs(title = "Respondants by Gender", y = "Number of Respondants", x = "Gender")+
+  theme_minimal()  #Adjust how it is displayed 
+  
+Figure2 + geom_bar(fill = "steelblue")
+
+Figure3 <- Quebec_survey_data %>% 
+  ggplot(aes(Region)) +
+  geom_bar() +
+  labs(title = "Respondants by Region", y = "Number of Respondants", x = "Region Type")+
+  theme_light()  #Adjust how it is displayed 
+  
+Figure3 + geom_bar(fill = "steelblue")
+
+
+Quebec_survey_data_clean  <- subset(Quebec_survey_data, Age != "17 years old or younger")
+
+
+
+table2 <- Quebec_survey_data_clean %>%  #Generate a percentage table of voting percentages based on views on protecting culture
+  tabyl(Upcoming_election, Protect_Culture) %>% #use tabyl to generate most of this 
+  adorn_percentages("col") %>% #tell it to display percentages
+  adorn_pct_formatting(digits = 1) %>% 
+  adorn_ns() %>% #Add back in the raw counts 
+  adorn_title(placement = "combined", col_name = "Importance of Protecting Quebecois Culture", row_name = "Voting Intention") %>%
+  knitr::kable() #Adjust how it is displayed 
+
+table2 
+
+
+total_votes_by_culture <- Quebec_survey_data_clean %>%  #generate a new data set that can be used fo ggplot
   select(Upcoming_election, Protect_Culture) %>%#select the collumns we wish to use
-  mutate(Percentage_voted_for = 0) %>% 
-  group_by(Protect_Culture) %>% #group all rows by date
-  Percentage_voted_for = count(Upcoming_election) 
+  group_by(Protect_Culture) %>% #group all rows by how important protecting culture was to them
+  count(Upcoming_election) #count each parties total intended votes based upon the grouping of Protecting Culture 
  
 
 total_votes_by_culture
 
-tabyl(Quebec_survey_data, Upcoming_election, Protect_Culture) %>%
-  adorn_percentages("col") %>%
-  adorn_pct_formatting(digits = 1)
-
-
-Figure1 <- total_votes_by_culture %>% 
+Figure4 <- total_votes_by_culture %>% #create a plot that can visualize the Table 1
   ggplot(aes(Protect_Culture, n, fill = Upcoming_election)) +
-  geom_histogram(stat = "identity") 
+  geom_bar(stat = "identity") + #set it to a bar graph
+  labs(title = "Voting Intentions based upon Respondant's view on Importance of Protecting Quebecois Culture", y = "Number of Respondants", x = "Rated Importance of Protecting Quebecois Culture", fill="Voting Intention")+
+  theme_light() #Adjust how it is displayed 
 
-Figure1
+Figure4
+
+
+ruraldata <- subset(Quebec_survey_data_clean, Region== 'Rural')
+towndata <- subset(Quebec_survey_data_clean, Region== 'Town')
+urbandata <- subset(Quebec_survey_data_clean, Region== 'Urban')
+
+p1 <- ggplot(data=ruraldata, aes(x=Area_for_Improvement)) + 
+  geom_histogram(stat='count', fill = "yellow") +
+  labs(title = "Respondant's Most Important Area of Improvement (Rural)", y = "Total Responses", x = "Most Important Area of Improvement")+
+  theme_light()  #Adjust how it is displayed 
+p2 <- ggplot(data=towndata, aes(x=Area_for_Improvement)) + 
+  geom_histogram(stat='count', fill = "red")+
+  labs(title = "Respondant's Most Important Area of Improvement (Town)", y = "Total Responses", x = "Most Important Area of Improvement")+
+  theme_light()  #Adjust how it is displayed 
+p3 <- ggplot(data=urbandata, aes(x=Area_for_Improvement)) + 
+  geom_histogram(stat='count', fill = "steelblue")+
+  labs(title = "Respondant's Most Important Area of Improvement (Urban)", y = "Total Responses", x = "Most Important Area of Improvement")+
+  theme_light()  #Adjust how it is displayed d
+
+grid.arrange(p1,p2,p3,nrow = 3) 
+
 
 ```
 
