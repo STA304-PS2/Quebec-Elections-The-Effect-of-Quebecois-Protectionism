@@ -6,7 +6,6 @@ output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
-install.packages("glue")
 library(tidyverse)
 library(dplyr)
 library(janitor)
@@ -118,24 +117,24 @@ Figure4 <- total_votes_by_culture %>% #create a plot that can visualize the Tabl
 Figure4
 
 
-ruraldata <- subset(Quebec_survey_data_clean, Region== 'Rural')
-towndata <- subset(Quebec_survey_data_clean, Region== 'Town')
-urbandata <- subset(Quebec_survey_data_clean, Region== 'Urban')
+ruraldata <- subset(Quebec_survey_data_clean, Region== 'Rural') #Pull out subset of just Rural data 
+towndata <- subset(Quebec_survey_data_clean, Region== 'Town') #Pull out subset of just Town data 
+urbandata <- subset(Quebec_survey_data_clean, Region== 'Urban') #Pull out subset of just Urban data 
 
-p1 <- ggplot(data=ruraldata, aes(x=Area_for_Improvement)) + 
+p1 <- ggplot(data=ruraldata, aes(x=Area_for_Improvement)) + #Use Rural subset to display the Most important issues in that area
   geom_histogram(stat='count', fill = "yellow") +
   labs(title = "Respondant's Most Important Area of Improvement (Rural)", y = "Total Responses", x = "Most Important Area of Improvement")+
   theme_light()  #Adjust how it is displayed 
-p2 <- ggplot(data=towndata, aes(x=Area_for_Improvement)) + 
+p2 <- ggplot(data=towndata, aes(x=Area_for_Improvement)) + #Use Town subset to display the Most important issues in that area
   geom_histogram(stat='count', fill = "red")+
   labs(title = "Respondant's Most Important Area of Improvement (Town)", y = "Total Responses", x = "Most Important Area of Improvement")+
   theme_light()  #Adjust how it is displayed 
-p3 <- ggplot(data=urbandata, aes(x=Area_for_Improvement)) + 
+p3 <- ggplot(data=urbandata, aes(x=Area_for_Improvement)) + #Use Urban subset to display the Most important issues in that area
   geom_histogram(stat='count', fill = "steelblue")+
   labs(title = "Respondant's Most Important Area of Improvement (Urban)", y = "Total Responses", x = "Most Important Area of Improvement")+
   theme_light()  #Adjust how it is displayed d
 
-grid.arrange(p1,p2,p3,nrow = 3) 
+grid.arrange(p1,p2,p3,nrow = 3) #Combine all graphs in to one easily usable figure
 
 
 ```
@@ -160,5 +159,19 @@ Where we put the Survey
 - Duffin, P. B., & 29, A. (2019, April 29). Population distribution of Quebec, by rural/urban type 2016. Retrieved from https://www.statista.com/statistics/608694/population-distribution-of-quebec-by-rural-urban-type/#:~:text=This statistic shows the population,in large urban population centers.
 - Elections Canada. (2019). General Election Results Raw Data. Retrieved from https://www.elections.ca/content.aspx?section=res&dir=rep/off/43gedata&document=index&lang=e
 - Statistics Canada. (2019, August 09). Census Profile, 2016 Census Quebec [Province] and Canada [Country]. Retrieved from https://www12.statcan.gc.ca/census-recensement/2016/dp-pd/prof/details/page.cfm?Lang=E&Geo1=PR&Code1=24&Geo2=PR&Code2=01&Data=Count&SearchText=24&SearchType=Begins&SearchPR=01&B1=All&Custom=&TABID=3
+- Sam Firke (2020). janitor: Simple Tools for Examining and Cleaning Dirty Data. R package version 2.0.1.
+  https://CRAN.R-project.org/package=janitor
+- JJ Allaire and Yihui Xie and Jonathan McPherson and Javier Luraschi and Kevin Ushey and Aron Atkins and Hadley Wickham and Joe Cheng
+  and Winston Chang and Richard Iannone (2020). rmarkdown: Dynamic Documents for R. R package version 2.3. URL
+  https://rmarkdown.rstudio.com.
+- Yihui Xie and J.J. Allaire and Garrett Grolemund (2018). R Markdown: The Definitive Guide. Chapman and Hall/CRC. ISBN 9781138359338.
+  URL https://bookdown.org/yihui/rmarkdown.
+- R Core Team (2020). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna,
+  Austria. URL https://www.R-project.org/.
+- Wickham et al., (2019). Welcome to the tidyverse. Journal of Open Source Software, 4(43), 1686, https://doi.org/10.21105/joss.01686
+- Hadley Wickham, Romain François, Lionel Henry and Kirill Müller (2020). dplyr: A Grammar of Data Manipulation. R package version
+  1.0.2. https://CRAN.R-project.org/package=dplyr
+- Baptiste Auguie (2017). gridExtra: Miscellaneous Functions for "Grid" Graphics. R package version 2.3.
+  https://CRAN.R-project.org/package=gridExtra
 
 
