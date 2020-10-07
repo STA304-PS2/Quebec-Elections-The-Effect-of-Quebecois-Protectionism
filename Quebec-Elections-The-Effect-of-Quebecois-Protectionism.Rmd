@@ -8,13 +8,14 @@ output: pdf_document
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(dplyr)
+library(janitor)
 ```
 
 The Sampling method 
 
 ```{r}
 set.seed(624)
-Quebes_survey_data <- tibble(
+Quebec_survey_data <- tibble(
   Gender = sample(x = c("Male", "Female", "Non-Binary", "Other", "Prefer not to say"), 
                   size = 100000, replace = TRUE, prob = c(0.48, 0.50, 0.01, 0.001, 0.009)), 
   #Based on Stats Can Census 2016 (Statistics Canada 2019)
@@ -35,7 +36,7 @@ Quebes_survey_data <- tibble(
   #Based upon the response to Angus Reid Institute's survey on Quebec Sovereignty, assuming a slightly higher rate would beleive that there is a credible threat than those seeking Independence, and that there would be a split among those not seeking independence on how they respond between Fictional issue and exagerated  (Angus Reid Institute 2016)
 )
 
-head(Quebes_survey_data)
+head(Quebec_survey_data)
 
 ```
 
@@ -46,6 +47,30 @@ head(Quebes_survey_data)
 # Survey Methodology
 
 # Results
+```{r}
+total_votes_by_culture <- Quebec_survey_data %>%  #generate a new data set 
+  select(Upcoming_election, Protect_Culture) %>%#select the collumns we wish to use
+  mutate(Percentage_voted_for = 0) %>% 
+  group_by(Protect_Culture) %>% #group all rows by date
+  Percentage_voted_for = count(Upcoming_election) 
+ 
+
+total_votes_by_culture
+
+tabyl(Quebec_survey_data, Upcoming_election, Protect_Culture) %>%
+  adorn_percentages("col") %>%
+  adorn_pct_formatting(digits = 1)
+
+
+Figure1 <- total_votes_by_culture %>% 
+  ggplot(aes(Protect_Culture, n, fill = Upcoming_election)) +
+  geom_histogram(stat = "identity") 
+
+Figure1
+
+```
+
+
 
 # Discussion
 What the results could mean 
