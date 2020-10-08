@@ -1,9 +1,12 @@
 ---
-title: "Quebec Elections the Effect of Quebecois Protectionism"
-author: "Ben Draskovic, Arjun Dhatt, Gantavya Gupta"
-date: "10/6/2020"
-output: pdf_document
+Title: "Quebec Elections: The Role Quebecois Protectionism played in Election Results."
+Authors: "Ben Draskovic, Arjun Dhatt, Gantavya Gupta"
+Date: "10/6/2020"
+Output: pdf_document
 ---
+
+# Survey Link: https://forms.gle/aKm6sXJdwCvm8vtN8 
+
 # Executive Summary 
 
 The focus of this report is to determine why the Liberal Party lost many seats to the Bloc Quebecois in the province of Quebec. Being hired by the Liberal Party we are assigned to determine why the Liberal Party lost so many seats… 
@@ -173,11 +176,6 @@ What the results could mean
 Weaknesses and what needs to come next 
 
 
-#Appendices 
-Where we put the Survey 
-
-
-
 
 # References 
 - Angus Reid Institute. (2016). What makes us Canadian? A study of values, beliefs, priorities and identity. Retrieved from http://angusreid.org/canada-values/
@@ -199,3 +197,11 @@ Where we put the Survey
   1.0.2. https://CRAN.R-project.org/package=dplyr
 - Baptiste Auguie (2017). gridExtra: Miscellaneous Functions for "Grid" Graphics. R package version 2.3.
   https://CRAN.R-project.org/package=gridExtra
+- Hadley Wickham, Romain François, Lionel Henry and Kirill Müller (2020). dplyr: A Grammar of Data Manipulation. R package version
+
+
+
+# Appendices
+
+- Survey Link: https://forms.gle/aKm6sXJdwCvm8vtN8 
+- Survey ScreenShots: 
