@@ -1,7 +1,7 @@
 ---
 title: "Quebec Elections — the Effect of Quebecois Protectionism"
 author: "Ben Draskovic, Arjun Dhatt, Gantavya Gupta"
-date: "10/6/2020"
+date: "10/8/2020"
 output: pdf_document
 ---
 
@@ -12,30 +12,29 @@ library(janitor)
 library(gridExtra)
 ```
 
-# Survey Link: https://forms.gle/aKm6sXJdwCvm8vtN8 
 
 ```{r, include=FALSE}
 set.seed(624)
 ##The Sampling Method##
 Quebec_survey_data <- tibble( 
-  Response_ID = (c(1:100000)),
+  Response_ID = (c(1:20000)),
   Gender = sample(x = c("Male", "Female", "Non-Binary", "Other", "Prefer not to say"), 
-                  size = 100000, replace = TRUE, prob = c(0.48, 0.50, 0.01, 0.001, 0.009)), 
+                  size = 20000, replace = TRUE, prob = c(0.48, 0.50, 0.01, 0.001, 0.009)), 
   #Based on Stats Can Census 2016 (Statistics Canada 2019)
   Age = sample(x = c("18 - 29 years old", "30 - 44 years old", "45 - 59 years old", "60+ years old", "17 years old or younger"), 
-               size = 100000, replace = TRUE, prob = c(0.170, 0.192, 0.217, 0.252, 0.169)), 
+               size = 20000, replace = TRUE, prob = c(0.170, 0.192, 0.217, 0.252, 0.169)), 
   #Based on Stats Can Census 2016 (Statistics Canada 2019)
-  Region = sample(x = c("Urban", "Town", "Rural"), size = 100000, replace = TRUE, prob = c(0.592, 0.086, 0.322)), 
+  Region = sample(x = c("Urban", "Town", "Rural"), size = 20000, replace = TRUE, prob = c(0.592, 0.086, 0.322)), 
   #Based on Duffin's 2016 surveys (Duffin 2019)
-  Last_election = sample(x = c("I did not vote in the last federal election", "I voted for the Liberal party", "I voted for the Conservative party", "I voted for the NDP party", "I voted for the Green party", "I voted for the Bloc Quebecois", "I voted for a party not listed above"), size = 100000, replace = TRUE, prob = c(0.327, 0.231, 0.108, 0.073, 0.030, 0.218, 0.013)), 
+  Last_election = sample(x = c("I did not vote in the last federal election", "I voted for the Liberal party", "I voted for the Conservative party", "I voted for the NDP party", "I voted for the Green party", "I voted for the Bloc Quebecois", "I voted for a party not listed above"), size = 20000, replace = TRUE, prob = c(0.327, 0.231, 0.108, 0.073, 0.030, 0.218, 0.013)), 
   #Based on Elections Canada results in 2019 (Elections Canada 2019)
-  Upcoming_election = sample(x = c("I do not plan to vote", "Liberal Party", "Conservative Party", "NDP Party", "Green Party", "Bloc Quebecois", "A party not listed above"), size = 100000, replace = TRUE, prob = c(0.327, 0.23, 0.11, 0.024, 0.038, 0.26, 0.011)),
+  Upcoming_election = sample(x = c("I do not plan to vote", "Liberal Party", "Conservative Party", "NDP Party", "Green Party", "Bloc Quebecois", "A party not listed above"), size = 20000, replace = TRUE, prob = c(0.327, 0.23, 0.11, 0.024, 0.038, 0.26, 0.011)),
   #Took the difference in percentage of votes each party got from 2015-2019 in  Quebec. Divided that difference by 2 making the assumption that the extreme trends would slow and assumed the same level of voter participation (Elections Canada 2019)
-  Area_for_Improvement = sample(x = c("Quebec Independenc", "Immigration", "Education", "Health Care", "Environment", "Other"), size = 100000, replace = TRUE, prob = c(0.15,0.15,0.1,0.3,0.15,0.15)),
+  Area_for_Improvement = sample(x = c("Quebec Independenc", "Immigration", "Education", "Health Care", "Environment", "Other"), size = 20000, replace = TRUE, prob = c(0.15,0.15,0.1,0.3,0.15,0.15)),
   #The probabilities are more difficult to simmulate for this variable. However based upon the finding of Angus Reid Institute's Survey these are some of the stand out categories. Also the rough distribution found was a large focus on Health care with fairly similar rate of interest in other issues (Angus Reid Institute 2018)
-  Protect_Culture = sample(x = c(1:5), size = 100000, replace = TRUE, prob = c(0.1, 0.2, 0.3, 0.2, 0.2)),
+  Protect_Culture = sample(x = c(1:5), size = 20000, replace = TRUE, prob = c(0.1, 0.2, 0.3, 0.2, 0.2)),
   #Based upon the the authors' perception that most in quebec belief that some level of protection is needed, and the continued existance of succession movements where 35% of Angus Reid Institute's survery respondants favored Quebec Sovereignty  (Angus Reid Institute 2018)
-  Identity_Under_Threat = sample(x = c("Yes, Quebecois identity is under threat.", "No, it is a fictional issue.", "There are some threats but they are exaggerated.", "Don't Know"), size = 100000, replace = TRUE, prob = c(0.4,0.3,0.25,0.05))
+  Identity_Under_Threat = sample(x = c("Yes, Quebecois identity is under threat.", "No, it is a fictional issue.", "There are some threats but they are exaggerated.", "Don't Know"), size = 20000, replace = TRUE, prob = c(0.4,0.3,0.25,0.05))
   #Based upon the response to Angus Reid Institute's survey on Quebec Sovereignty, assuming a slightly higher rate would beleive that there is a credible threat than those seeking Independence, and that there would be a split among those not seeking independence on how they respond between Fictional issue and exagerated  (Angus Reid Institute 2016)
 )
 ```
@@ -85,19 +84,21 @@ In this report, we use survey sampling to collect information on the province of
 
 The sampling method used in this case is simple random sampling without replacement (SRSWOR). Because we want to pick a part of the population that best represents Quebec, we believe that SRSWOR’s ability to randomly pick individuals from Quebec without any bias is really useful. Randomly selecting from a large population from Quebec will assure that the sample is representative of the population. Also, SRSWOR is relatively simple to conduct, which means we don’t have to spend too much money on the execution of the survey. SRSWOR is also helpful in our case because the sample mean is an unbiased estimator for the population mean— this fact can be helpful when analyzing our results. 
 
-There are two different ways that we will be reaching the desired respondents of our survey — the first is through SMS texting and the second by mail surveys. Because we would like to get a sample representative of the entire province of Quebec, we decided the best way to do that would be by random sampling the entire province. SMS texting is the most convenient way to reach most of our respondents, but we also wanted to reach a large portion of the population that is not tech-savvy, or do not have a cell phone, so we also creating a mail survey with identical questions. In order to ensure that our survey is not categorized as spam, we are going to disclose that we are associated with the Liberal Party, making it more likely that our respondents will fill out the survey. 60% of our survey will be distributed through SMS text and the other 40% will be distributed through mail. 
+There are two different ways that we will be reaching the desired respondents of our survey — the first is through SMS texting and the second by mail surveys. This is so that we there is less bias in those who respond based on the two methods in which an individual can respond. Since we would like to get a sample representative of the entire province of Quebec, we decided the best way to do that would be by random sampling the entire province. SMS texting is the most convenient way to reach most of our respondents, but we also wanted to reach a large portion of the population that is not tech-savvy, or do not have a cell phone, so we also creating a mail survey with identical questions. In order to ensure that our survey is not categorized as spam, we are going to disclose that we are associated with the Liberal Party, making it more likely that our respondents will fill out the survey. 60% of our survey will be distributed through SMS text and the other 40% will be distributed through mail. 
 
-  As we designed the survey, we were aware of the fact that distributing 60% of our survey through SMS text and the other 40% through mail would result in bias, but we also realized that there was a trade-off between cost and bias. Because mail surveys were much more expensive, we decided to strike a balance between the bias of our survey and the cost of our survey and do a 60-40 split. Ideally, we would have liked to distribute 50% of the survey through SMS texting and the other 50% through mail to reduce bias, but this would also significantly increase our cost. 
+As we designed the survey, we were aware of the fact that distributing 60% of our survey through SMS text and the other 40% through mail would result in bias, but we also realized that there was a trade-off between cost and bias. Because mail surveys were much more expensive, we decided to strike a balance between the bias of our survey and the cost of our survey and do a 60-40 split. Ideally, we would have liked to distribute 50% of the survey through SMS texting and the other 50% through mail to reduce bias, but this would also significantly increase our cost. 
 
-In order to ensure that our survey has at least 100,000 respondents, and targeting a 20% response rate, we plan to administer 500,000 surveys — 300,000 through SMS text and 200,000 through mail. Based upon our short survey, multiple methods of response and respect for the respondent’s privacy, we believe we can hit our target 20% response rate. 
+We set our target for number of responses at 20,000. This is based upon a goal of a 99% confidence interval and 1% margin of error, which was applied to the provincial population of Quebec, which currently stands at 8.485 million (Statistics Canada 2020). Using these in a standard sample size calculation gives a target of 16,545. This was done using Qualtrics services (Qualtrics 2020). In order to give the project more wiggle room in case our response rate drops below our goal or multiple mail in surveys are filled out incorrectly we rounded up that figure to 20,000. 
 
-Based on contemporary services, we expect to spend a total of 180,000 on 200,000 mail surveys. With each survey costing approximately $0.90 (Canada Post 2020), multiplied by the amount of mail surveys we plan to send, 200 000, we arrive at a cost of $180,000. Based on Simple Texting, a mass texting service, we plan to spend a total of $3,750 on SMS text surveys. Since 50,000 surveys cost $625 and we would like to send out 300,000 surveys, we will spend a total of $625*6=$3,750 on SMS text surveys (Simple Texting 2020). This results in a combined cost of $183,750 for administering the survey. To incentivize respondents, we are also including prizes for completing the survey, and we estimate that to cost approximately $1,250, bringing us to a total estimate of $185,000. 
+In order to ensure that our survey has at least 20,000 respondents, we targetted a 20% response rate. This means we plan to administer 100,000 surveys — 60,000 through SMS text and 40,000 through mail. Based upon our short survey, multiple methods of response and respect for the respondent’s privacy, we believe we can hit our target 20% response rate. 
 
-When arriving at an estimate of $185,000, we were cognizant of the fact that we are employed by the Liberty Party of Canada — the oldest federal party in Canada —making it more likely for our survey to be funded.  When arriving at the estimate of $185,000, we also decided to cut costs by reducing the amount of mail surveys by 50,000 in order to cut costs.  
+Based on contemporary services, we expect to spend a total of $36,800 on 40,000 mail surveys. With each survey costing approximately $0.92 (Canada Post 2020), multiplied by the amount of mail surveys we plan to send, 40 000, we arrive at a cost of $36,800. Based on Simple Texting, a mass texting service, we plan to spend a total of $750 on SMS text surveys. Since 50,000 surveys cost $625 and we would like to send out 60,000 surveys, we will spend a total of $625*1.2=$750 on SMS text surveys (Simple Texting 2020). This results in a combined cost of $37,550 for administering the survey. To incentivize respondents, we are also including prizes for completing the survey, and we estimate that to cost approximately $1,250, bringing us to a total estimate of $38,800. 
+
+When arriving at an estimate of $38,800, we were cognizant of the fact that we are employed by the Liberty Party of Canada — the oldest federal party in Canada —making it more likely for our survey to be funded.  When arriving at the estimate of $38,800, we also decided to cut costs by reducing the amount of mail surveys by 10,000 in order to cut costs.  
   
-Despite the fact that we are sending out 500,00 surveys, we are not expecting a total of 500,000 respondents. When deciding to send out 500,000 surveys we were aware that many people will choose not to respond, and we decided to aim for a 20% response rate. To get as many respondents as possible, we shortened our survey, created two different ways to respond to the survey and also respect the respondent’s privacy when asking questions. The designed survey does not ask about any overtly private/sensitive information and when designing the survey, we included as much information as possible in the description of the survey to inform the respondent what the purpose of the survey is, how we are going to use the respondent’s data, and how we are going respect their privacy. 
+Despite the fact that we are sending out 100,00 surveys, we are not expecting a total of 100,000 respondents. When deciding to send out 100,000 surveys we were aware that many people will choose not to respond, and we decided to aim for a 20% response rate. To get as many respondents as possible, we shortened our survey, created two different ways to respond to the survey and also respect the respondent’s privacy when asking questions. The designed survey does not ask about any overtly private/sensitive information and when designing the survey, we included as much information as possible in the description of the survey to inform the respondent what the purpose of the survey is, how we are going to use the respondent’s data, and how we are going respect their privacy. 
 
-Even though we have tried to get as many respondents as possible, we are still expecting nonresponses. In preparation for the inevitable nonresponses, we decided to send out 500,000 surveys, hoping to meet our target response rate of 20% and meet our goal of 100,000 respondents. In order to prevent nonresponses, we have incentivized our respondents with a chance to win a prize if they respond to the survey. We expect that nonresponses will be more common in some groups (e.g. older population, rural areas, etc.) and this can negatively affect our survey because it causes a higher variance in the response. A high variance is something that we are trying to prevent; the use of mail surveys aim to prevent nonresponses in those groups, therefore reducing variance. 
+Even though we have tried to get as many respondents as possible, we are still expecting nonresponses. In preparation for the inevitable nonresponses, we decided to send out 100,000 surveys, hoping to meet our target response rate of 20% and meet our goal of 20,000 respondents. In order to prevent nonresponses, we have incentivized our respondents with a chance to win a prize if they respond to the survey. We expect that nonresponses will be more common in some groups (e.g. older population, rural areas, etc.) and this can negatively affect our survey because it causes a higher variance in the response. A high variance is something that we are trying to prevent; the use of mail surveys aim to prevent nonresponses in those groups, therefore reducing variance. 
 
 # Results
 
@@ -285,6 +286,7 @@ All in all, the findings of this paper mean that further study must be done on o
 
 # Appendices 
 
+## Survey Link: https://forms.gle/aKm6sXJdwCvm8vtN8 
 Where we put the Survey 
 
 Below you will find the R code used in this analysis. 
@@ -477,8 +479,10 @@ grid.arrange(p1,p2,p3,nrow = 3) #Combine all graphs in to one easily usable figu
 - Canada Post. (2020). Buy stamps, postage meters and indicia: Business. Retrieved from https://www.canadapost.ca/cpc/en/business/postal-services/stamps-meters.page
 - Duffin, P. B., & 29, A. (2019, April 29). Population distribution of Quebec, by rural/urban type 2016. Retrieved from https://www.statista.com/statistics/608694/population-distribution-of-quebec-by-rural-urban-type/#:~:text=This statistic shows the population,in large urban population centers.
 - Elections Canada. (2019). General Election Results Raw Data. Retrieved from https://www.elections.ca/content.aspx?section=res&dir=rep/off/43gedata&document=index&lang=e
+- Qualtrics. (2020, September 09). How to Determine the Correct Survey Sample Size. Retrieved from https://www.qualtrics.com/experience-management/research/determine-sample-size/
 - Simple Texting. (2020, June 03). SMS Marketing Pricing: Text Marketing Plans: SimpleTexting. Retrieved from https://simpletexting.com/pricing/
 - Statistics Canada. (2019, August 09). Census Profile, 2016 Census Quebec [Province] and Canada [Country]. Retrieved from https://www12.statcan.gc.ca/census-recensement/2016/dp-pd/prof/details/page.cfm?Lang=E&Geo1=PR&Code1=24&Geo2=PR&Code2=01&Data=Count&SearchText=24&SearchType=Begins&SearchPR=01&B1=All&Custom=&TABID=3
+
 
 ## Coding
 - Sam Firke (2020). janitor: Simple Tools for Examining and Cleaning Dirty Data. R package version 2.0.1.
