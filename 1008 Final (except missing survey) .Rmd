@@ -1,6 +1,6 @@
 
 ---
-title: "Quebec Elections — the Effect of Quebecois Protectionism"
+title: "Quebec Federal Elections — The Effect of Quebecois Protectionism"
 author: "Ben Draskovic, Arjun Dhatt, Gantavya Gupta"
 date: "10/8/2020"
 output: pdf_document
@@ -285,14 +285,40 @@ Furthermore, all these responses are being taken well in advance of elections be
 All in all, the findings of this paper mean that further study must be done on other possible explanatory variables. While we have ruled out Cultural Protectionism and Regionality there are many more factors that could be the cause of the uptick in Quebecers voting for the Bloc Quebecois. A recommendation that we would make is a smaller more anecdotal qualitative study of specific voters in the ridings that were lost. Perhaps in person interviews on the decision making they used in 2019. This could lead to much richer data, that while not being generalizable, could give us a glimpse in to what could be the primary explanatory variable in this trend towards the Bloc Quebecois. 
 
 
+# References 
+## Research
+- Angus Reid Institute. (2016). What makes us Canadian? A study of values, beliefs, priorities and identity. Retrieved from http://angusreid.org/canada-values/
+- Angus Reid Institute. (2018). Quebecers were more likely to say the province was on the wrong track than the right one before Oct. 1. Retrieved from http://angusreid.org/quebec-election-2018-analysis
+- Beaton, C. (2018, June 14). Why You Can't Really Trust Negative Online Reviews. Retrieved from https://www.nytimes.com/2018/06/13/smarter-living/trust-negative-product-reviews.html
+- Canada Post. (2020). Buy stamps, postage meters and indicia: Business. Retrieved from https://www.canadapost.ca/cpc/en/business/postal-services/stamps-meters.page
+- Duffin, P. B., & 29, A. (2019, April 29). Population distribution of Quebec, by rural/urban type 2016. Retrieved from https://www.statista.com/statistics/608694/population-distribution-of-quebec-by-rural-urban-type/#:~:text=This statistic shows the population,in large urban population centers.
+- Elections Canada. (2019). General Election Results Raw Data. Retrieved from https://www.elections.ca/content.aspx?section=res&dir=rep/off/43gedata&document=index&lang=e
+- Qualtrics. (2020, September 09). How to Determine the Correct Survey Sample Size. Retrieved from https://www.qualtrics.com/experience-management/research/determine-sample-size/
+- Simple Texting. (2020, June 03). SMS Marketing Pricing: Text Marketing Plans: SimpleTexting. Retrieved from https://simpletexting.com/pricing/
+- Statistics Canada. (2019, August 09). Census Profile, 2016 Census Quebec [Province] and Canada [Country]. Retrieved from https://www12.statcan.gc.ca/census-recensement/2016/dp-pd/prof/details/page.cfm?Lang=E&Geo1=PR&Code1=24&Geo2=PR&Code2=01&Data=Count&SearchText=24&SearchType=Begins&SearchPR=01&B1=All&Custom=&TABID=3
+
+
+## Coding
+- Sam Firke (2020). janitor: Simple Tools for Examining and Cleaning Dirty Data. R package version 2.0.1.
+https://CRAN.R-project.org/package=janitor
+- JJ Allaire and Yihui Xie and Jonathan McPherson and Javier Luraschi and Kevin Ushey and Aron Atkins and Hadley Wickham and Joe Cheng
+and Winston Chang and Richard Iannone (2020). rmarkdown: Dynamic Documents for R. R package version 2.3. URL
+https://rmarkdown.rstudio.com.
+- Yihui Xie and J.J. Allaire and Garrett Grolemund (2018). R Markdown: The Definitive Guide. Chapman and Hall/CRC. ISBN 9781138359338.
+URL https://bookdown.org/yihui/rmarkdown.
+- R Core Team (2020). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna,
+Austria. URL https://www.R-project.org/.
+- Wickham et al., (2019). Welcome to the tidyverse. Journal of Open Source Software, 4(43), 1686, https://doi.org/10.21105/joss.01686
+- Hadley Wickham, Romain François, Lionel Henry and Kirill Müller (2020). dplyr: A Grammar of Data Manipulation. R package version
+1.0.2. https://CRAN.R-project.org/package=dplyr
+- Baptiste Auguie (2017). gridExtra: Miscellaneous Functions for "Grid" Graphics. R package version 2.3.
+https://CRAN.R-project.org/package=gridExtra
+
 
 # Appendices 
 
-## Survey 
-The link for the survey can be found on the following link: https://forms.gle/aKm6sXJdwCvm8vtN8 
-
-Below is a list of screenshots of the survey:
-
+## Git Repository 
+The link to the Git Repository is: https://github.com/STA304-PS2/Quebec-Elections-The-Effect-of-Quebecois-Protectionism
 
 ## Code 
 
@@ -572,32 +598,22 @@ p3 <- ggplot(data=urbandata, aes(x=Area_for_Improvement)) +
 grid.arrange(p1,p2,p3,nrow = 3) #Combine all graphs in to one easily usable figure
 ```
 
-# References 
-## Research
-- Angus Reid Institute. (2016). What makes us Canadian? A study of values, beliefs, priorities and identity. Retrieved from http://angusreid.org/canada-values/
-- Angus Reid Institute. (2018). Quebecers were more likely to say the province was on the wrong track than the right one before Oct. 1. Retrieved from http://angusreid.org/quebec-election-2018-analysis
-- Beaton, C. (2018, June 14). Why You Can't Really Trust Negative Online Reviews. Retrieved from https://www.nytimes.com/2018/06/13/smarter-living/trust-negative-product-reviews.html
-- Canada Post. (2020). Buy stamps, postage meters and indicia: Business. Retrieved from https://www.canadapost.ca/cpc/en/business/postal-services/stamps-meters.page
-- Duffin, P. B., & 29, A. (2019, April 29). Population distribution of Quebec, by rural/urban type 2016. Retrieved from https://www.statista.com/statistics/608694/population-distribution-of-quebec-by-rural-urban-type/#:~:text=This statistic shows the population,in large urban population centers.
-- Elections Canada. (2019). General Election Results Raw Data. Retrieved from https://www.elections.ca/content.aspx?section=res&dir=rep/off/43gedata&document=index&lang=e
-- Qualtrics. (2020, September 09). How to Determine the Correct Survey Sample Size. Retrieved from https://www.qualtrics.com/experience-management/research/determine-sample-size/
-- Simple Texting. (2020, June 03). SMS Marketing Pricing: Text Marketing Plans: SimpleTexting. Retrieved from https://simpletexting.com/pricing/
-- Statistics Canada. (2019, August 09). Census Profile, 2016 Census Quebec [Province] and Canada [Country]. Retrieved from https://www12.statcan.gc.ca/census-recensement/2016/dp-pd/prof/details/page.cfm?Lang=E&Geo1=PR&Code1=24&Geo2=PR&Code2=01&Data=Count&SearchText=24&SearchType=Begins&SearchPR=01&B1=All&Custom=&TABID=3
 
+## Survey 
+The link for the survey can be found on the following link: https://forms.gle/aKm6sXJdwCvm8vtN8 
 
-## Coding
-- Sam Firke (2020). janitor: Simple Tools for Examining and Cleaning Dirty Data. R package version 2.0.1.
-https://CRAN.R-project.org/package=janitor
-- JJ Allaire and Yihui Xie and Jonathan McPherson and Javier Luraschi and Kevin Ushey and Aron Atkins and Hadley Wickham and Joe Cheng
-and Winston Chang and Richard Iannone (2020). rmarkdown: Dynamic Documents for R. R package version 2.3. URL
-https://rmarkdown.rstudio.com.
-- Yihui Xie and J.J. Allaire and Garrett Grolemund (2018). R Markdown: The Definitive Guide. Chapman and Hall/CRC. ISBN 9781138359338.
-URL https://bookdown.org/yihui/rmarkdown.
-- R Core Team (2020). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna,
-Austria. URL https://www.R-project.org/.
-- Wickham et al., (2019). Welcome to the tidyverse. Journal of Open Source Software, 4(43), 1686, https://doi.org/10.21105/joss.01686
-- Hadley Wickham, Romain François, Lionel Henry and Kirill Müller (2020). dplyr: A Grammar of Data Manipulation. R package version
-1.0.2. https://CRAN.R-project.org/package=dplyr
-- Baptiste Auguie (2017). gridExtra: Miscellaneous Functions for "Grid" Graphics. R package version 2.3.
-https://CRAN.R-project.org/package=gridExtra
+Below is a list of screenshots of the survey.
 
+The mailed version of the survey uses the same lay out. However, the questions are not seperated into two parts as they are online.  
+
+![Liberal Party Survey Part 1.1](Liberal Party Survey Part1.1.png)
+
+![Liberal Party Survey Part 1.2](Liberal Party Survey Part1.2.png)
+
+![Liberal Party Survey Part 1.3](Liberal Party Survey Part1.3.png)
+
+![Liberal Party Survey Part 1.4](Liberal Party Survey Part1.4.png)
+
+![Liberal Party Survey Part 2.1](Liberal Party Survey Part2.1.png)
+
+![Liberal Party Survey Part 2.2](Liberal Party Survey Part2.2.png)
